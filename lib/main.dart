@@ -39,14 +39,14 @@ class StudentProfilePage extends StatelessWidget {
   // Academic information
   final List<Map<String, String>> academicInfo = const [
     {'label': 'Favorite Subject', 'value': 'Science'},
-    {'label': 'Programming Language', 'value': 'PHP'},
+    {'label': 'Programming Language', 'value': 'Java'},
     {'label': 'Technical Skill', 'value': 'App Developer'},
   ];
 
-  // Builds one row that safely wraps instead of overflowing on narrow screens
+  // Builds one row that fills its space and wraps safely
   Widget _infoRow(IconData icon, String label, String value) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+      padding: const EdgeInsets.symmetric(vertical: 12),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -57,7 +57,8 @@ class StudentProfilePage extends StatelessWidget {
             child: Text(
               label,
               style: const TextStyle(
-                fontWeight: FontWeight.w500,
+                fontSize: 15,
+                fontWeight: FontWeight.w600,
                 color: Colors.black87,
               ),
             ),
@@ -68,11 +69,29 @@ class StudentProfilePage extends StatelessWidget {
               value,
               textAlign: TextAlign.right,
               softWrap: true,
-              style: const TextStyle(color: Colors.black54),
+              style: const TextStyle(fontSize: 15, color: Colors.black54),
             ),
           ),
         ],
       ),
+    );
+  }
+
+  Widget _sectionHeader(String title) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: const TextStyle(
+            fontSize: 19,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
+        ),
+        const SizedBox(height: 8),
+        const Divider(thickness: 1, color: Colors.black26),
+      ],
     );
   }
 
@@ -87,171 +106,217 @@ class StudentProfilePage extends StatelessWidget {
         centerTitle: true,
         backgroundColor: Colors.black,
       ),
-      body: SingleChildScrollView(
+      body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding: const EdgeInsets.all(24.0),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // Profile picture
-              CircleAvatar(
-                radius: 60,
-                backgroundColor: Colors.grey.shade300,
-                backgroundImage: const AssetImage('assets/profile.jpg'),
-                // If you don't have a photo yet, replace the line above with:
-                // child: const Icon(Icons.person, size: 60, color: Colors.black87),
-              ),
-              const SizedBox(height: 16),
-
-              // Full name and nickname
-              Text(
-                fullName,
-                style: const TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 4),
-              Text(
-                '"$nickname"',
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontStyle: FontStyle.italic,
-                  color: Colors.black54,
-                ),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                motto,
-                style: const TextStyle(
-                  fontSize: 14,
-                  color: Colors.black87,
-                  fontWeight: FontWeight.w500,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 20),
-
-              // Personal information card
-              Card(
-                color: Colors.white,
-                elevation: 2,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  side: BorderSide(color: Colors.grey.shade300),
+              // Top: photo, name, nickname, motto — bigger and centered
+              Container(
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: Colors.grey.shade300),
                 ),
                 child: Column(
                   children: [
-                    const Padding(
-                      padding: EdgeInsets.only(
-                        top: 12,
-                        left: 16,
-                        right: 16,
-                        bottom: 4,
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Personal Information',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ],
+                    CircleAvatar(
+                      radius: 55,
+                      backgroundColor: Colors.grey.shade300,
+                      backgroundImage: const AssetImage('assets/profile.jpg'),
+                    ),
+                    const SizedBox(height: 14),
+                    Text(
+                      fullName,
+                      style: const TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
                       ),
                     ),
-                    _infoRow(Icons.cake, 'Age', age),
-                    _infoRow(Icons.calendar_today, 'Birthday', birthday),
-                    _infoRow(Icons.home, 'Address', address),
-                    _infoRow(Icons.favorite, 'Hobby', hobby),
-                    _infoRow(Icons.school, 'Course/Program', course),
-                    _infoRow(Icons.stairs, 'Year Level', yearLevel),
-                    _infoRow(Icons.groups, 'Section', section),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 4),
+                    Text(
+                      '"$nickname"',
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontStyle: FontStyle.italic,
+                        color: Colors.black54,
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      motto,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        color: Colors.black87,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
                   ],
                 ),
               ),
               const SizedBox(height: 20),
 
-              // Academic information card
-              Card(
-                color: Colors.white,
-                elevation: 2,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  side: BorderSide(color: Colors.grey.shade300),
-                ),
-                child: Column(
+              // Two-column info section stretches to fill the rest of the screen
+              Expanded(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    const Padding(
-                      padding: EdgeInsets.only(
-                        top: 12,
-                        left: 16,
-                        right: 16,
-                        bottom: 4,
+                    // Left column: Personal Information
+                    Expanded(
+                      flex: 3,
+                      child: Card(
+                        color: Colors.white,
+                        elevation: 2,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                          side: BorderSide(color: Colors.grey.shade300),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(22.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              _sectionHeader('Personal Information'),
+                              Expanded(
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    _infoRow(Icons.cake, 'Age', age),
+                                    _infoRow(
+                                      Icons.calendar_today,
+                                      'Birthday',
+                                      birthday,
+                                    ),
+                                    _infoRow(Icons.home, 'Address', address),
+                                    _infoRow(Icons.favorite, 'Hobby', hobby),
+                                    _infoRow(Icons.school, 'Course', course),
+                                    _infoRow(
+                                      Icons.stairs,
+                                      'Year Level',
+                                      yearLevel,
+                                    ),
+                                    _infoRow(Icons.groups, 'Section', section),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
+                    ),
+                    const SizedBox(width: 20),
+
+                    // Right column: Academic Information + button
+                    Expanded(
+                      flex: 2,
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          Text(
-                            'Academic Information',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
+                          Expanded(
+                            child: Card(
+                              color: Colors.white,
+                              elevation: 2,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16),
+                                side: BorderSide(color: Colors.grey.shade300),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(22.0),
+                                child: Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
+                                  children: [
+                                    _sectionHeader('Academic Information'),
+                                    Expanded(
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          for (final item in academicInfo)
+                                            Row(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                const Icon(
+                                                  Icons.check_circle_outline,
+                                                  color: Colors.black87,
+                                                  size: 20,
+                                                ),
+                                                const SizedBox(width: 10),
+                                                Expanded(
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Text(
+                                                        item['label']!,
+                                                        style: const TextStyle(
+                                                          fontSize: 15,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          color: Colors.black87,
+                                                        ),
+                                                      ),
+                                                      const SizedBox(height: 2),
+                                                      Text(
+                                                        item['value']!,
+                                                        style: const TextStyle(
+                                                          fontSize: 14,
+                                                          color: Colors.black54,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+
+                          // Interactive button, stretched full width
+                          ElevatedButton.icon(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.black,
+                              foregroundColor: Colors.white,
+                              padding: const EdgeInsets.symmetric(vertical: 18),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                            onPressed: () {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text(
+                                    'Thanks for checking out my profile!',
+                                  ),
+                                  duration: Duration(seconds: 2),
+                                ),
+                              );
+                            },
+                            icon: const Icon(Icons.email, size: 20),
+                            label: const Text(
+                              'Contact Me',
+                              style: TextStyle(fontSize: 16),
                             ),
                           ),
                         ],
                       ),
                     ),
-                    for (final item in academicInfo)
-                      ListTile(
-                        leading: const Icon(
-                          Icons.check_circle_outline,
-                          color: Colors.black87,
-                        ),
-                        title: Text(item['label']!),
-                        subtitle: Text(
-                          item['value']!,
-                          style: const TextStyle(color: Colors.black54),
-                        ),
-                      ),
-                    const SizedBox(height: 8),
                   ],
                 ),
               ),
-              const SizedBox(height: 24),
-
-              // Interactive button
-              ElevatedButton.icon(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.black,
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 12,
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
-                onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Thanks for checking out my profile!'),
-                      duration: Duration(seconds: 2),
-                    ),
-                  );
-                },
-                icon: const Icon(Icons.email),
-                label: const Text('Contact Me'),
-              ),
-              const SizedBox(height: 20),
             ],
           ),
         ),
