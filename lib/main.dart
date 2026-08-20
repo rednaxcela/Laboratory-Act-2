@@ -39,7 +39,7 @@ class StudentProfilePage extends StatelessWidget {
   // Academic information
   final List<Map<String, String>> academicInfo = const [
     {'label': 'Favorite Subject', 'value': 'Science'},
-    {'label': 'Programming Language', 'value': 'Java'},
+    {'label': 'Programming Language', 'value': 'PHP'},
     {'label': 'Technical Skill', 'value': 'App Developer'},
   ];
 
